@@ -26,6 +26,7 @@ const CLOUD_CLASSES = [
   { name: "Altostratus",   label: "Lapisan awan menengah keabu-abuan" },
   { name: "Cirrostratus",  label: "Lapisan tipis tinggi, halo matahari" },
   { name: "Cirrocumulus",  label: "Awan tinggi kecil bergerombol" },
+  { name: "Contrail", label: "Jejak kondensasi pesawat di atmosfer" },
 ];
 
 
@@ -629,7 +630,7 @@ async function runDetection(file) {
   const formData = new FormData();
   formData.append("image", file);
 
-  const res = await fetch("http://127.0.0.1:5000/predict", {
+  const res = await fetch("https://cloudvision-api.up.railway.app/predict", {
     method: "POST",
     body: formData
   });
