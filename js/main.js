@@ -630,7 +630,7 @@ async function runDetection(file) {
   const formData = new FormData();
   formData.append("image", file);
 
-  const res = await fetch("https://cloudvision-api.up.railway.app/predict", {
+  const res = await fetch("https://cloudvision-imagedetection.up.railway.app", {
     method: "POST",
     body: formData
   });
