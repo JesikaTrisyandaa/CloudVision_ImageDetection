@@ -75,3 +75,7 @@ def predict():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
+print("Mulai load model...", flush=True)
+model = tf.keras.models.load_model("model_akurasi72.h5", compile=False)
+print("Model berhasil dimuat", flush=True)
