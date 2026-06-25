@@ -1,22 +1,43 @@
 import os
+
+# Paksa TensorFlow hanya menggunakan CPU
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+
 import tensorflow as tf
 import numpy as np
+
 from PIL import Image
 import io
 
 from tensorflow.keras.applications.mobilenet import preprocess_input
 
+# ============================
+# FLASK
+# ============================
+
 app = Flask(__name__, static_folder=".", static_url_path="")
 CORS(app)
 
-print("Mulai load model...")
-model = tf.keras.models.load_model("model_akurasi72.h5", compile=False)
-print("Model berhasil dimuat")
+# ============================
+# LOAD MODEL
+# ============================
+
+print("Mulai load model...", flush=True)
+
+model = tf.keras.models.load_model(
+    "model_akurasi72.h5",
+    compile=False
+)
+
+print("Model berhasil dimuat.", flush=True)
+
+# ============================
+# NAMA KELAS
+# ============================
 
 CLOUD_CLASSES = [
     "Altocumulus",
@@ -32,50 +53,85 @@ CLOUD_CLASSES = [
     "Stratus"
 ]
 
+# ============================
+# HOME
+# ============================
+
 @app.route("/")
 def home():
     return send_from_directory(".", "index.html")
 
+# ============================
+# PREDICT
+# ============================
+
 @app.route("/predict", methods=["POST"])
 def predict():
+
+    print("REQUEST MASUK KE /predict", flush=True)
+
     try:
-        print("REQUEST MASUK KE /predict")
 
         if "image" not in request.files:
-            return jsonify({"error": "File image tidak ditemukan"}), 400
+            print("Tidak ada file image", flush=True)
+            return jsonify({"error": "Image tidak ditemukan"}), 400
 
         file = request.files["image"]
-        print("File diterima:", file.filename)
+
+        print("Nama file:", file.filename, flush=True)
 
         img = Image.open(io.BytesIO(file.read())).convert("RGB")
         img = img.resize((224, 224))
 
-        arr = np.array(img).astype("float32")
+        arr = np.array(img).astype(np.float32)
+
         arr = np.expand_dims(arr, axis=0)
+
         arr = preprocess_input(arr)
 
-        probs = model.predict(arr)[0]
+        print("Mulai prediksi...", flush=True)
 
-        predictions = [
-            {"class": CLOUD_CLASSES[i], "prob": float(probs[i])}
-            for i in range(len(CLOUD_CLASSES))
-        ]
+        probs = model.predict(arr, verbose=0)[0]
 
-        predictions = sorted(predictions, key=lambda x: x["prob"], reverse=True)
+        print("Prediksi selesai.", flush=True)
 
-        print("Prediksi selesai:", predictions[0])
+        predictions = []
 
-        return jsonify({"predictions": predictions})
+        for i in range(len(CLOUD_CLASSES)):
+            predictions.append({
+                "class": CLOUD_CLASSES[i],
+                "prob": float(probs[i])
+            })
+
+        predictions = sorted(
+            predictions,
+            key=lambda x: x["prob"],
+            reverse=True
+        )
+
+        print("Top Prediction:", predictions[0], flush=True)
+
+        return jsonify({
+            "predictions": predictions
+        })
 
     except Exception as e:
-        print("ERROR PREDICT:", e)
-        return jsonify({"error": str(e)}), 500
 
+        print("ERROR :", str(e), flush=True)
+
+        return jsonify({
+            "error": str(e)
+        }), 500
+
+# ============================
+# RUN
+# ============================
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
 
-print("Mulai load model...", flush=True)
-model = tf.keras.models.load_model("model_akurasi72.h5", compile=False)
-print("Model berhasil dimuat", flush=True)
+    port = int(os.environ.get("PORT", 5000))
+
+    app.run(
+        host="0.0.0.0",
+        port=port
+    )
