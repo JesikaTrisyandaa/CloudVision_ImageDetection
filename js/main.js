@@ -622,23 +622,33 @@ document.addEventListener("DOMContentLoaded", () => {
 //     (a, b) => b.prob - a.prob
 //   );
 // }
-
 async function runDetection(file) {
   showState("loading");
   const t0 = performance.now();
 
-  const formData = new FormData();
-  formData.append("image", file);
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
 
-  const res = await fetch("https://cloudvision-imagedetection.up.railway.app", {
-    method: "POST",
-    body: formData
-  });
+    const res = await fetch("https://cloudvision-imagedetection.up.railway.app/predict", {
+      method: "POST",
+      body: formData
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  const inferenceMs = Math.round(performance.now() - t0);
-  renderResult(data.predictions, inferenceMs);
+    if (!res.ok) {
+      throw new Error(data.error || "Gagal melakukan prediksi");
+    }
+
+    const inferenceMs = Math.round(performance.now() - t0);
+    renderResult(data.predictions, inferenceMs);
+
+  } catch (error) {
+    console.error("Error klasifikasi:", error);
+    alert("Terjadi error saat klasifikasi: " + error.message);
+    showState("empty");
+  }
 }
 
 /* Simulasi probabilitas — hasilkan distribusi yang masuk akal */
