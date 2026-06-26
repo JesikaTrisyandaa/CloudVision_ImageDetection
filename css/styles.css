@@ -1460,9 +1460,14 @@ h1, h2, h3, h4, h5 {
 .results-split{
     display: flex;
     gap: 30px;
-    align-items: stretch;   /* atau bisa dihapus karena ini default */
+    align-items: stretch;  
 }
-
+.result-block:last-child img{
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+    margin-top: 30px;
+}
 .result-block{
     flex: 1;
     display: flex;
