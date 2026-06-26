@@ -1459,7 +1459,7 @@ h1, h2, h3, h4, h5 {
 
 .results-split{
     display: flex;
-    gap: 30px;
+    gap: 70px;
     align-items: center;   
 }
 
