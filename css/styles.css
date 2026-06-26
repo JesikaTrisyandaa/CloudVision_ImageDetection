@@ -1459,12 +1459,14 @@ h1, h2, h3, h4, h5 {
 
 .results-split{
     display: flex;
-    gap: 70px;
-    align-items: center;   
+    gap: 30px;
+    align-items: stretch;   /* atau bisa dihapus karena ini default */
 }
 
 .result-block{
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 .upload-preview {
   flex: 1;
