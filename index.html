@@ -70,19 +70,19 @@
       </div>
       <div class="beranda-stats">
         <div class="stat">
-          <div class="stat-value">10</div>
+          <div class="stat-value">11</div>
           <div class="stat-label">Kelas Awan</div>
         </div>
         <div class="stat">
-          <div class="stat-value">94.7%</div>
+          <div class="stat-value">69.25%</div>
           <div class="stat-label">Akurasi Model</div>
         </div>
         <div class="stat">
-          <div class="stat-value">8.500+</div>
+          <div class="stat-value">18.980</div>
           <div class="stat-label">Citra Dataset</div>
         </div>
         <div class="stat">
-          <div class="stat-value">&lt; 2s</div>
+          <div class="stat-value">&lt; 1s</div>
           <div class="stat-label">Waktu Inferensi</div>
         </div>
       </div>
@@ -526,8 +526,7 @@
           <div class="t-body">
             <h4>Pengumpulan Dataset</h4>
             <p>
-              Menggunakan dataset CCSN dari Kaggle yang berisi 8.500+ citra awan berlabel sesuai klasifikasi World Meteorological Organization (WMO).
-            </p>
+              Menggunakan dataset gabungan dari empat sumber dataset publik, yaitu CCSN, Ground-based Cloud Dataset (GCD), Cloud Photos dari Mendeley Data , dan Cloud-ImVN 1.0, yang setelah proses integrasi menghasilkan 18.980 citra awan berlabel dalam 11 kelas awan berdasarkan klasifikasi World Meteorological Organization (WMO).
           </div>
         </div>
         <div class="t-step">
@@ -535,8 +534,7 @@
           <div class="t-body">
             <h4>Preprocessing</h4>
             <p>
-              Citra diresize ke 224×224, dinormalisasi, dan diaugmentasi
-              (rotation, flip, brightness) untuk meningkatkan generalisasi model.
+              Tahap pre-processing meliputi resize citra menjadi 224 × 224 piksel, pembagian dataset menjadi data training, validation, dan testing, serta augmentasi pada data training menggunakan rotasi (20°), zoom (20%), pergeseran horizontal dan vertikal (20%), serta pembalikan horizontal untuk meningkatkan keragaman data pelatihan.
             </p>
           </div>
         </div>
@@ -545,8 +543,7 @@
           <div class="t-body">
             <h4>Training Model CNN</h4>  <!--CEK LAGI!!!!!!!!!!!!!!!!!!!! -->
             <p>
-              Arsitektur transfer learning berbasis ResNet-50 dengan fine-tuning
-              pada 50 epoch. Optimizer Adam, learning rate 1e-4, batch size 32.
+              Arsitektur transfer learning berbasis MobileNet dengan optimizer Adam, learning rate 1e-4, batch size 22, serta menggunakan Early Stopping untuk memperoleh model dengan performa terbaik.
             </p>
           </div>
         </div>
@@ -555,8 +552,7 @@
           <div class="t-body">
             <h4>Evaluasi &amp; Deployment</h4>
             <p>
-              Validasi menggunakan confusion matrix, precision, recall, dan F1-score.
-              Model di-deploy melalui REST API untuk digunakan dalam aplikasi web.
+              Model dievaluasi menggunakan confusion matrix, accuracy, precision, recall, dan F1-score, kemudian di-deploy melalui REST API berbasis Flask untuk diintegrasikan ke dalam aplikasi web.
             </p>
           </div>
         </div>
@@ -567,13 +563,14 @@
         <div class="tech-grid">
           <div class="tech-pill">Python 3.10</div>
           <div class="tech-pill">TensorFlow / Keras</div>
-          <div class="tech-pill">ResNet-50</div> 
-          <div class="tech-pill">OpenCV</div>
-          <div class="tech-pill">Flask / FastAPI</div>
-          <div class="tech-pill">HTML · CSS · JS</div>
+          <div class="tech-pill">MobileNet</div>
+          <div class="tech-pill">Flask</div>
+          <div class="tech-pill">HTML · CSS · JavaScript</div>
+          <div class="tech-pill">NumPy</div>
         </div>
       </div>
     </div>
+    
   </section>
 
   <!-- ====== RESULTS ====== -->
@@ -583,26 +580,25 @@
         <span class="eyebrow light">Performa Model</span>
         <h2 class="section-title">Hasil Evaluasi</h2>
         <p class="section-desc">
-          Pengujian dilakukan menggunakan 1.700 citra test set (20% dari total
-          dataset) yang tidak pernah dilihat model selama proses training.
+          Pengujian dilakukan menggunakan <b>5.697 citra data testing</b> (30% dari total dataset) yang tidak pernah digunakan selama proses training model.
         </p>
       </div>
 
       <div class="metric-grid">
         <div class="metric-card">
-          <div class="m-value">94.7%</div>
-          <div class="m-label">Akurasi Keseluruhan</div>
-          <div class="m-bar"><span style="width:94.7%"></span></div>
+          <div class="m-value">69.25%</div>
+          <div class="m-label">Accuracy</div>
+          <div class="m-bar"><span style="width:69.25%"></span></div>
         </div>
         <div class="metric-card">
-          <div class="m-value">93.2%</div>
-          <div class="m-label">Precision Rata-rata</div>
-          <div class="m-bar"><span style="width:50.2%"></span></div>
+          <div class="m-value">72.84%</div>
+          <div class="m-label">Weighted Precision</div>
+          <div class="m-bar"><span style="width:72.84%"></span></div>
         </div>
         <div class="metric-card">
-          <div class="m-value">94.1%</div>
-          <div class="m-label">Recall Rata-rata</div>
-          <div class="m-bar"><span style="width:94.1%"></span></div>
+          <div class="m-value">69.25%</div>
+          <div class="m-label">Weighted Recall</div>
+          <div class="m-bar"><span style="width:69.25%"></span></div>
         </div>
         <div class="metric-card">
           <div class="m-value">93.6%</div>
@@ -615,30 +611,18 @@
         <div class="result-block">
           <h4>Akurasi Per Kelas</h4>
           <div class="acc-list">
-            <div class="acc-row"><span>Cumulus</span><div class="acc-bar"><span style="width:96%"></span></div><strong>96.0%</strong></div>
-            <div class="acc-row"><span>Stratus</span><div class="acc-bar"><span style="width:93%"></span></div><strong>93.0%</strong></div>
-            <div class="acc-row"><span>Cirrus</span><div class="acc-bar"><span style="width:97%"></span></div><strong>97.0%</strong></div>
-            <div class="acc-row"><span>Cumulonimbus</span><div class="acc-bar"><span style="width:98%"></span></div><strong>98.0%</strong></div>
-            <div class="acc-row"><span>Nimbostratus</span><div class="acc-bar"><span style="width:91%"></span></div><strong>91.0%</strong></div>
-            <div class="acc-row"><span>Altocumulus</span><div class="acc-bar"><span style="width:92%"></span></div><strong>92.0%</strong></div>
-            <div class="acc-row"><span>Stratocumulus</span><div class="acc-bar"><span style="width:90%"></span></div><strong>90.0%</strong></div>
-            <div class="acc-row"><span>Cirrostratus</span><div class="acc-bar"><span style="width:95%"></span></div><strong>95.0%</strong></div>
-            <div class="acc-row"><span>Altostratus</span><div class="acc-bar"><span style="width:95%"></span></div><strong>95.0%</strong></div>
-            <div class="acc-row"><span>Cirrocumulus</span><div class="acc-bar"><span style="width:95%"></span></div><strong>95.0%</strong></div>
-          </div>
-        </div>
-        <div class="result-block">
-          <!-- <h4>Citra Satelit Pendukung</h4> -->
-          <!-- <div class="satellite-card" style="background-image: url('images/satellite.jpg');">  -->
-            <div class="satellite-card" id="satelliteCard"></div>
-            <div class="sat-overlay">
-              <div class="sat-tag"><span class="dot-on"></span> Live Feed Simulation</div>
-              <div class="sat-info">
-                <div class="sat-row"><span>Wilayah</span><strong>Jawa Timur</strong></div>
-                <div class="sat-row"><span>Sumber</span><strong>Himawari-9</strong></div>
-                <div class="sat-row"><span>Resolusi</span><strong>2 km</strong></div>
-              </div>
-            </div>
+            <div class="acc-row"><span>Cumulus</span><div class="acc-bar"><span style="width:92.67%"></span></div><strong>92.67%</strong></div>
+
+            <div class="acc-row"><span>Stratus</span><div class="acc-bar"><span style="width:17.65%"></span></div><strong>17.65%</strong></div>
+            <div class="acc-row"><span>Cirrus</span><div class="acc-bar"><span style="width:64.15%"></span></div><strong>64.15%</strong></div>
+            <div class="acc-row"><span>Cumulonimbus</span><div class="acc-bar"><span style="width:59.18%"></span></div><strong>59.18%</strong></div>
+            <div class="acc-row"><span>Nimbostratus</span><div class="acc-bar"><span style="width:50.82%"></span></div><strong>50.82%</strong></div>
+            <div class="acc-row"><span>Altocumulus</span><div class="acc-bar"><span style="width:81.64%"></span></div><strong>81.64%</strong></div>
+            <div class="acc-row"><span>Stratocumulus</span><div class="acc-bar"><span style="width:82.15%"></span></div><strong>82.15%</strong></div>
+            <div class="acc-row"><span>Cirrostratus</span><div class="acc-bar"><span style="width:19.20%"></span></div><strong>19.20%</strong></div>
+            <div class="acc-row"><span>Altostratus</span><div class="acc-bar"><span style="width:45.13%"></span></div><strong>45.13%</strong></div>
+            <div class="acc-row"><span>Cirrocumulus</span><div class="acc-bar"><span style="width:45.00%"></span></div><strong>45.00%</strong></div>
+            <div class="acc-row"><span>Contrail</span><div class="acc-bar"><span style="width:83.33%"></span></div><strong>83.33%</strong></div>
           </div>
         </div>
       </div>
@@ -652,7 +636,7 @@
         <span class="eyebrow">Kontak &amp; Informasi</span>
         <h2 class="section-title">Mari Berkolaborasi</h2>
         <p class="lead">
-          CloudVision dikembangkan sebagai bagian dari projek akhir program magang
+          CloudVision dikembangkan sebagai bagian dari proyek akhir program magang
           mahasiswa di Stasiun Meteorologi Juanda. Untuk informasi lebih lanjut,
           kolaborasi penelitian, atau penggunaan sistem, silakan hubungi kami.
         </p>
