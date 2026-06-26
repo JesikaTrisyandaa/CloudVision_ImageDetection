@@ -29,7 +29,7 @@ CORS(app)
 print("Mulai load model...", flush=True)
 
 model = tf.keras.models.load_model(
-    "model_akurasi72.h5",
+    "model_akurasinew.h5",
     compile=False
 )
 
