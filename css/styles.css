@@ -837,65 +837,64 @@ h1, h2, h3, h4, h5 {
 .cloud:hover{
   transform:scale(1.05);
 }
-
 .cirrus-wrap{
-  top:30%;
+  top:31%;
   left:55%;
-  width:290px;
+  width:200px;
 }
 
 .cirrostratus-wrap{
-  top:19%;
+  top:22%;
   left:34%;
-  width:350px;
+  width:250px;
 }
 
 .cirrocumulus-wrap{
-  top:25%;
-  left:1%;
-  width:540px;
+  top:30%;
+  left:9%;
+  width:300px;
 }
 
 .altostratus-wrap{
-  width: 400px;
+  width: 300px;
   top: 47%;
   left: 13%;
 }
 
 .altocumulus-wrap{
-  width: 350px;
+  width: 250px;
   top: 46%;
   left: 58%;
 }
 
 .stratus-wrap{
-  width: 430px;
+  width: 300px;
   top: 82%;
   left: 24%;
 }
 
 .stratocumulus-wrap{
-  width: 390px;
+  width: 200x;
   top: 62%;
   left: 36%;
 }
 
 .nimbostratus-wrap{
-  width: 350px;
-  top: 68%;
+  width: 250px;
+  top: 70%;
   left: 4%;
 }
 
 .cumulus-wrap{
-  width: 390px;
+  width: 300px;
   top: 80%;
   left: 56%;
 }
 
 .cumulonimbus-wrap{
-  width: 500px;
-  top: 35%;
-  left: 73%;
+  width: 300x;
+  top: 27%;
+  left: 76%;
 }
 
 .cloud-facts{
@@ -1458,6 +1457,15 @@ h1, h2, h3, h4, h5 {
   color: var(--c-text-soft);
 }
 
+.results-split{
+    display: flex;
+    gap: 30px;
+    align-items: center;   
+}
+
+.result-block{
+    flex: 1;
+}
 .upload-preview {
   flex: 1;
   position: relative;
